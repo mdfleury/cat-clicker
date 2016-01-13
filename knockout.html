@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html class="no-js"  lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8" />
+		<link type="text/css" rel="stylesheet" href="css/main.css" media="all" />
+		<script src="vendor/knockout-3.4.0.js"></script>
+	</head>
+	<body>
+		<div id="content">
+			<select data-bind="options: cats, value: chosenCat, optionsText: 'name'"></select>
+			<div class="cat" data-bind="with: chosenCat">
+				<p data-bind="text: name"></p>
+				<img data-bind="click: addClick, attr: { src: url }"/>
+				<p>Clicked <span data-bind="text: clicks()"></span> times</p>
+			</div>
+		</div>
+		<script src="js/knockout.js"></script>
+	</body>
+</html>
