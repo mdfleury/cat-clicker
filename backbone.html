@@ -8,14 +8,23 @@
 		<script src="vendor/backbone.js"></script>
 	</head>
 	<body>
-		<div id="catclicker">
-			<select data-bind="options: cats, value: chosenCat, optionsText: 'name'"></select>
-			<div class="cat" data-bind="with: chosenCat">
-				<p data-bind="text: name"></p>
-				<img data-bind="click: addClick, attr: { src: url }"/>
-				<p>Clicked <span data-bind="text: clicks()"></span> times</p>
+		<div id="catpicker"></div>
+		<div id="catclicker"></div>
+		<script type="text/template" data-template="cat">
+			<div class="cat">
+				<p><%= name %></p>
+				<img src="<%= image %>"/>
+				<p class="clicks">Clicked <%= clicks %> times</p>
 			</div>
-		</div>
+		</script>
+		<script type="text/template" data-template="selector">
+			<select>
+				<% cats.each(function(cat) { %>
+					<option><%= cat.name %></option>
+				<% }); %>
+			</select>
+		</script>
+
 		<script src="js/backbone.js"></script>
 	</body>
 </html>

@@ -1,125 +1,76 @@
-$(function() {
+var Cat = Backbone.Model.extend({
+	defaults: function() {
+		return {
+			name: "",
+			image: "",
+			clicks: 0
+		};
+	},
 
-	var Cat = Backbone.Model.extend({
-		defaults: function() {
-			return {
-				name: "",
-				image: "",
-				clicks: 0
-			};
-		},
+	moreClicks: function() {
+		this.set({
+			clicks: this.get("clicks") + 1
+		});
+	}
+});
 
-		// Toggle the `done` state of this todo item.
-		addClick: function() {
-			this.save({
-				clicks: this.get("clicks") + 1
-			});
-		}
+var CatList = Backbone.Collection.extend({
+	model: Cat,
+	comparator: 'name'
+});
 
-	});
+var initialCats = [
+	new Cat({
+		'name': 'Fergie',
+		'image': 'http://cdn.playbuzz.com/cdn/0079c830-3406-4c05-a5c1-bc43e8f01479/7dd84d70-768b-492b-88f7-a6c70f2db2e9.jpg'
+	}),
+	new Cat({
+		'name': 'Felix',
+		'image': 'http://media1.santabanta.com/full1/Animals/Cats/cats-93a.jpg'
+	}),
+	new Cat({
+		'name': 'Garfield',
+		'image': 'http://cdn.revistadonna.clicrbs.com.br/wp-content/uploads/sites/9/2014/07/Smiling_Cat.jpg'
+	}),
+	new Cat({
+		'name': 'Tom',
+		'image': 'https://lh3.ggpht.com/kixazxoJ2ufl3ACj2I85Xsy-Rfog97BM75ZiLaX02KgeYramAEqlEHqPC3rKqdQj4C1VFnXXryadFs1J9A=s0'
+	}),
+	new Cat({
+		'name': 'Murphy',
+		'image': 'https://lh3.ggpht.com/nlI91wYNCrjjNy5f-S3CmVehIBM4cprx-JFWOztLk7vFlhYuFR6YnxcT446AvxYg4Ab7M1Fy0twaOCWYcUk=s0'
+	})
+];
 
-	var CatList = Backbone.Collection.extend({
+var Cats = new CatList(initialCats);
 
-		// Reference to this collection's model.
-		model: Cat,
+var AppView = Backbone.View.extend({
 
-		// Todos are sorted by their original insertion order.
-		comparator: 'name'
+	model: Cats,
+	el: $("#catclicker"),
 
-	});
+	catTemplate: _.template($('script[data-template="cat"]').html()),
+	selectTemplate: _.template($('script[data-template="selector"]').html()),
 
-	var Cats = new CatList();
+	events: {
+		"click img": "addClick",
+	},
 
-	// Todo Item View
-	// --------------
+	addClick: function() {
+		this.chosenCat.moreClicks();
+	},
 
-	// The DOM element for a todo item...
-	var CatView = Backbone.View.extend({
+	initialize: function() {
+		this.chosenCat = Cats.first();
+        this.listenTo(this.model, 'change', this.render);
+		this.render();
+	},
 
-		//... is a list tag.
-		tagName: "li",
-
-		// Cache the template function for a single item.
-		template: _.template($('#item-template').html()),
-
-		// The DOM events specific to an item.
-		events: {
-			"click .toggle": "toggleDone",
-			"dblclick .view": "edit",
-			"click a.destroy": "clear",
-			"keypress .edit": "updateOnEnter",
-			"blur .edit": "close"
-		},
-
-		// The TodoView listens for changes to its model, re-rendering. Since there's
-		// a one-to-one correspondence between a **Todo** and a **TodoView** in this
-		// app, we set a direct reference on the model for convenience.
-		initialize: function() {
-			this.listenTo(this.model, 'change', this.render);
-			this.listenTo(this.model, 'destroy', this.remove);
-		},
-
-		// Re-render the titles of the todo item.
-		render: function() {
-			this.$el.html(this.template(this.model.toJSON()));
-			this.$el.toggleClass('done', this.model.get('done'));
-			this.input = this.$('.edit');
-			return this;
-		}
-
-	});
-
-	// The Application
-	// ---------------
-
-	// Our overall **AppView** is the top-level piece of UI.
-	var AppView = Backbone.View.extend({
-
-		// Instead of generating a new element, bind to the existing skeleton of
-		// the App already present in the HTML.
-		el: $("#catclicker"),
-
-		// Our template for the line of statistics at the bottom of the app.
-		statsTemplate: _.template($('#stats-template').html()),
-
-		// Delegated events for creating new items, and clearing completed ones.
-		events: {
-			"keypress #new-todo": "createOnEnter",
-			"click #clear-completed": "clearCompleted",
-			"click #toggle-all": "toggleAllComplete"
-		},
-
-		// At initialization we bind to the relevant events on the `Todos`
-		// collection, when items are added or changed. Kick things off by
-		// loading any preexisting todos that might be saved in *localStorage*.
-		initialize: function() {
-			this.chosenCat = Cats.first();
-		},
-
-		// Re-rendering the App just means refreshing the statistics -- the rest
-		// of the app doesn't change.
-		render: function() {
-			var done = Cats.done().length;
-			var remaining = Cats.remaining().length;
-
-			if (Cats.length) {
-				this.main.show();
-				this.footer.show();
-				this.footer.html(this.statsTemplate({
-					done: done,
-					remaining: remaining
-				}));
-			} else {
-				this.main.hide();
-				this.footer.hide();
-			}
-
-			this.allCheckbox.checked = !remaining;
-		}
-
-	});
-
-	// Finally, we kick things off by creating the **App**.
-	var App = new AppView();
+	render: function() {
+		this.$el.html(this.catTemplate(this.chosenCat.attributes));
+	}
 
 });
+
+// Finally, we kick things off by creating the **App**.
+var App = new AppView();
