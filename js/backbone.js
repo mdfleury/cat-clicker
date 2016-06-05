@@ -14,6 +14,20 @@ var Cat = Backbone.Model.extend({
 	}
 });
 
+var State = Backbone.Model.extend({
+	defaults: function() {
+		return cat = {};
+	},
+
+	chooseCat: function (Cat) {
+		this.set({
+			'cat': Cat
+		})
+	}
+});
+
+var AppState = new State();
+
 var CatList = Backbone.Collection.extend({
 	model: Cat,
 	comparator: 'name'
@@ -44,33 +58,80 @@ var initialCats = [
 
 var Cats = new CatList(initialCats);
 
-var AppView = Backbone.View.extend({
+var CatSelectView = Backbone.View.extend({
 
-	model: Cats,
-	el: $("#catclicker"),
+	el: $(".cat-select"),
+
+	selectTemplate: _.template($('script[data-template="selector"]').html()),
+
+	events: {
+		"change select": "onChange",
+	},
+
+	onChange: function (event) {
+		this.model.appState.chooseCat(this.model.cats.findWhere({'name': event.target.value}));
+	},
+
+	initialize: function() {
+		this.render();
+	},
+
+	render: function() {
+		this.$el.html(this.selectTemplate({cats: this.model.cats}));
+	}
+
+});
+
+var CatDisplayView = Backbone.View.extend({
+
+	el: $(".cat-display"),
 
 	catTemplate: _.template($('script[data-template="cat"]').html()),
-	selectTemplate: _.template($('script[data-template="selector"]').html()),
 
 	events: {
 		"click img": "addClick",
 	},
 
 	addClick: function() {
-		this.chosenCat.moreClicks();
+		this.model.appState.get('cat').moreClicks();
 	},
 
-	initialize: function() {
-		this.chosenCat = Cats.first();
-        this.listenTo(this.model, 'change', this.render);
+	initialize: function(parent) {
+        this.listenTo(this.model.cats, 'change', this.render);
+        this.listenTo(this.model.appState, 'change', this.render);
 		this.render();
 	},
 
 	render: function() {
-		this.$el.html(this.catTemplate(this.chosenCat.attributes));
+		this.$el.html();
+
+		var html = this.catTemplate({cat: this.model.appState.get('cat')});
+		this.$el.html(html);
 	}
 
 });
 
-// Finally, we kick things off by creating the **App**.
+var AppView = Backbone.View.extend({
+
+	model: {
+		cats: Cats,
+		appState: AppState
+	},
+
+	el: $(".cat-clicker"),
+
+	subViews: {},
+
+	addClick: function() {
+		this.model.appState.moreClicks();
+	},
+
+	initialize: function() {		
+		this.model.appState.chooseCat(this.model.cats.first());
+
+		this.subViews.catSelect = new CatSelectView({model: this.model});
+		this.subViews.catDisplay = new CatDisplayView({model: this.model});
+	},
+});
+
 var App = new AppView();
