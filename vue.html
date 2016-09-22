@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html class="no-js"  lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8" />
+		<link type="text/css" rel="stylesheet" href="css/main.css" media="all" />
+		<script src="vendor/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<select v-on:change="selectCat">
+				<option v-for="cat in cats" value="{{$index}}">{{cat.name}}</option>
+			</select>
+			<div class="cat" >
+				<p>{{currentCat.name}}</p>
+				<img src="{{currentCat.url}}" v-on:click="clickCat"/>
+				<p>Clicked {{currentCat.clicks}} times</p>
+			</div>
+		</div>
+		<script src="js/vue.js"></script>
+	</body>
+</html>
