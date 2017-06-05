@@ -14,11 +14,11 @@ function CatClickerViewModel() {
 
 	// Editable data
 	self.cats = ko.observableArray([
-		new Cat("Fergie", 'http://cdn.playbuzz.com/cdn/0079c830-3406-4c05-a5c1-bc43e8f01479/7dd84d70-768b-492b-88f7-a6c70f2db2e9.jpg'),
-		new Cat("Felix", 'http://media1.santabanta.com/full1/Animals/Cats/cats-93a.jpg'),
-		new Cat("Garfield", 'http://cdn.revistadonna.clicrbs.com.br/wp-content/uploads/sites/9/2014/07/Smiling_Cat.jpg'),
-		new Cat("Tom", 'https://lh3.ggpht.com/kixazxoJ2ufl3ACj2I85Xsy-Rfog97BM75ZiLaX02KgeYramAEqlEHqPC3rKqdQj4C1VFnXXryadFs1J9A=s0'),
-		new Cat("Murphy", 'https://lh3.ggpht.com/nlI91wYNCrjjNy5f-S3CmVehIBM4cprx-JFWOztLk7vFlhYuFR6YnxcT446AvxYg4Ab7M1Fy0twaOCWYcUk=s0')
+		new Cat("Adam", 'https://mdfleury.github.io/cat-clicker/images/cat1.jpg'),
+		new Cat("Bill", 'https://mdfleury.github.io/cat-clicker/images/cat2.jpg'),
+		new Cat("Chris", 'https://mdfleury.github.io/cat-clicker/images/cat3.jpg'),
+		new Cat("David", 'https://mdfleury.github.io/cat-clicker/images/cat4.jpg'),
+		new Cat("Ebert", 'https://mdfleury.github.io/cat-clicker/images/cat5.jpg')
 	]);
 
 	self.chosenCat = ko.observable(self.cats()[0]);

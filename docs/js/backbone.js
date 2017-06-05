@@ -16,13 +16,13 @@ var Cat = Backbone.Model.extend({
 
 var State = Backbone.Model.extend({
 	defaults: function() {
-		return cat = {};
+		return {};
 	},
 
 	chooseCat: function (Cat) {
 		this.set({
 			'cat': Cat
-		})
+		});
 	}
 });
 
@@ -35,24 +35,24 @@ var CatList = Backbone.Collection.extend({
 
 var initialCats = [
 	new Cat({
-		'name': 'Fergie',
-		'image': 'http://cdn.playbuzz.com/cdn/0079c830-3406-4c05-a5c1-bc43e8f01479/7dd84d70-768b-492b-88f7-a6c70f2db2e9.jpg'
+		'name': 'Adam',
+		'image': 'https://mdfleury.github.io/cat-clicker/images/cat1.jpg'
 	}),
 	new Cat({
-		'name': 'Felix',
-		'image': 'http://media1.santabanta.com/full1/Animals/Cats/cats-93a.jpg'
+		'name': 'Bill',
+		'image': 'https://mdfleury.github.io/cat-clicker/images/cat2.jpg'
 	}),
 	new Cat({
-		'name': 'Garfield',
-		'image': 'http://cdn.revistadonna.clicrbs.com.br/wp-content/uploads/sites/9/2014/07/Smiling_Cat.jpg'
+		'name': 'Chris',
+		'image': 'https://mdfleury.github.io/cat-clicker/images/cat3.jpg'
 	}),
 	new Cat({
-		'name': 'Tom',
-		'image': 'https://lh3.ggpht.com/kixazxoJ2ufl3ACj2I85Xsy-Rfog97BM75ZiLaX02KgeYramAEqlEHqPC3rKqdQj4C1VFnXXryadFs1J9A=s0'
+		'name': 'David',
+		'image': 'https://mdfleury.github.io/cat-clicker/images/cat4.jpg'
 	}),
 	new Cat({
-		'name': 'Murphy',
-		'image': 'https://lh3.ggpht.com/nlI91wYNCrjjNy5f-S3CmVehIBM4cprx-JFWOztLk7vFlhYuFR6YnxcT446AvxYg4Ab7M1Fy0twaOCWYcUk=s0'
+		'name': 'Ebert',
+		'image': 'https://mdfleury.github.io/cat-clicker/images/cat5.jpg'
 	})
 ];
 
@@ -126,7 +126,7 @@ var AppView = Backbone.View.extend({
 		this.model.appState.moreClicks();
 	},
 
-	initialize: function() {		
+	initialize: function() {
 		this.model.appState.chooseCat(this.model.cats.first());
 
 		this.subViews.catSelect = new CatSelectView({model: this.model});
