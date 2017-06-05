@@ -1,0 +1,10 @@
+<div class="cat-clicker">
+  <select [(ngModel)]="selectedCat">
+    <option *ngFor="let cat of cats" [ngValue]="cat">{{cat.name}}</option>
+  </select>
+</div>
+<div *ngIf="selectedCat" class="cat">
+  <p>{{selectedCat.name}}</p>
+  <img (click)="clickCat()" src="{{selectedCat.url}}"/>
+  <p>Clicked {{selectedCat.clicks}} times</p>
+</div>
