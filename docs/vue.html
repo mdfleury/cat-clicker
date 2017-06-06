@@ -12,7 +12,7 @@
 			</select>
 			<div class="cat" >
 				<p>{{currentCat.name}}</p>
-				<img src="{{currentCat.url}}" v-on:click="clickCat"/>
+				<img v-attr="src:@{{currentCat.url}}" v-on:click="clickCat"/>
 				<p>Clicked {{currentCat.clicks}} times</p>
 			</div>
 		</div>
