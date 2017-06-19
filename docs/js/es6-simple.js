@@ -1,3 +1,5 @@
+//jshint esversion: 6
+
 (function () {
 	const cats = [
 		{
@@ -32,7 +34,7 @@
 	const init = function () {
 		currentCat = cats[0];
 		let selectHtml = '';
-		for (cat of cats) {
+		for (let cat of cats) {
 			selectHtml += `<option>${cat.name}</option>`;
 		}
 
@@ -48,7 +50,7 @@
 		}
 
 		document.getElementById('cat-display').innerHTML = `<div class="cat">
-<p>${currentCat.name}</p>
+<p class="name">${currentCat.name}</p>
 <img src="${currentCat.url}"/>
 <p class="clicks">Clicked ${currentCat.clicks} times</p>
 </div>`;
